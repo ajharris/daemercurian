@@ -70,5 +70,5 @@ python test_app.py
 ```
 
 ## Contact
-For questions, reach out at [your-email@example.com].
+For questions, reach out at andrew.harris at torontomu.ca.
 
