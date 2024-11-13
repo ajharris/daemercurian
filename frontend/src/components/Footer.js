@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer>
       <p>&copy; {new Date().getFullYear()} Daemercurian Consulting. All rights reserved.</p>
-      <p>Contact us at your-email@example.com</p>
+      <p>Contact us at info at Daemercurian.com</p>
     </footer>
   );
 };
