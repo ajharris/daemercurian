@@ -4,13 +4,16 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# config.py
+import os
+
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
-    
-    # Email configuration
-    MAIL_SERVER = os.getenv("MAIL_SERVER", "smtp.your-email-provider.com")
-    MAIL_PORT = int(os.getenv("MAIL_PORT", 587))
-    MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "true").lower() in ("true", "1", "t")
-    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
-    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
+    MAIL_SERVER = os.getenv("MAIL_SERVER")  # e.g., "smtp.gmail.com"
+    MAIL_PORT = int(os.getenv("MAIL_PORT", 587))  # Port number, commonly 587 for TLS
+    MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "true").lower() == "true"
+    MAIL_USE_SSL = os.getenv("MAIL_USE_SSL", "false").lower() == "true"
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")  # Your email username
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")  # Your email password
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")  # Default sender email
+
+

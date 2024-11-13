@@ -1,7 +1,14 @@
 import unittest
 from app import app
 from unittest.mock import patch
-import time
+import time, os
+
+class EnvTest(unittest.TestCase):
+    def test_env_variables(self):
+        required_vars = ["MAIL_SERVER", "MAIL_PORT", "MAIL_USERNAME", "MAIL_PASSWORD"]
+        for var in required_vars:
+            self.assertIsNotNone(os.getenv(var), f"{var} is not set in .env file")
+
 
 class FlaskTest(unittest.TestCase):
     def setUp(self):
