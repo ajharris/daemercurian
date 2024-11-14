@@ -1,6 +1,6 @@
 import unittest
 from dotenv import load_dotenv
-from backend.app import create_app  # Correct import
+from backend.app import create_app
 from unittest.mock import patch
 import time, os, sys
 
