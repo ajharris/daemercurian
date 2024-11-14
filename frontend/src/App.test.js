@@ -5,5 +5,6 @@ import App from './App';
 test('renders navigation links', () => {
     render(<App />);
     expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    expect(screen.getByText(/Services/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Services/i })).toBeInTheDocument();
+
 });

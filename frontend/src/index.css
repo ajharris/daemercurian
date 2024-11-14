@@ -22,7 +22,7 @@ code {
   --text-color: #000000;
   --header-bg-color: #f8f9fa;
   --footer-bg-color: #f8f9fa;
-  --primary-color: #621eff;
+  --primary-color: #621effa4;
 
   /* Bootstrap Variable Overrides */
   --bs-body-bg: #ffffff;
@@ -82,4 +82,69 @@ a, button {
 
 .container {
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-container {
+  padding: 2rem;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.inline-logo {
+  width: 100px;
+  height: auto;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.services-overview {
+  text-align: center;
+}
+
+.service-cards {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.service-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+}
+
+/* Services.css */
+.services-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.services-cards {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.service-details {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
