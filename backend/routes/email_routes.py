@@ -3,6 +3,7 @@ from flask_mail import Message
 from ..extensions import mail  # Import mail from extensions
 import re
 
+# Initialize email_routes as a Blueprint
 email_routes = Blueprint('email_routes', __name__)
 
 def is_valid_email(email):
