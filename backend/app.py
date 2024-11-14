@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask_mail import Mail
-from config import Config
+from .config import Config
 
 mail = Mail()  # Initialize mail here globally
 
