@@ -19,16 +19,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'
+        python-version: '3.12'  # Use Python 3.12 to match your environment
 
     - name: Install dependencies
       run: |
         python -m venv .venv
         source .venv/bin/activate
-        pip install -r requirements.txt
+        pip install -r requirements.txt  # Ensure this points to the correct requirements file
 
     - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend" >> $GITHUB_ENV
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend" >> $GITHUB_ENV  # Ensures `backend` is in the import path
 
     - name: Run backend tests
       run: |
