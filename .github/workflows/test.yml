@@ -12,6 +12,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
+      MAIL_PORT: ${{ secrets.MAIL_PORT }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      # Add other necessary variables
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -19,16 +26,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # Use Python 3.12 to match your environment
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
         python -m venv .venv
         source .venv/bin/activate
-        pip install -r requirements.txt  # Ensure this points to the correct requirements file
+        pip install -r requirements.txt
 
     - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend" >> $GITHUB_ENV  # Ensures `backend` is in the import path
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/backend" >> $GITHUB_ENV
 
     - name: Run backend tests
       run: |
