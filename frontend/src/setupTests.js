@@ -1,8 +1,7 @@
 // src/setupTests.js
 import '@testing-library/jest-dom';
 
-
-// Mock `window.matchMedia` with `addEventListener` and `removeEventListener`
+// Mock `window.matchMedia` with both `addEventListener` and `addListener`
 beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -29,5 +28,4 @@ beforeAll(() => {
         }
       }),
     });
-  });
-  
+});

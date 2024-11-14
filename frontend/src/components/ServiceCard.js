@@ -1,14 +1,17 @@
+// ServiceCard.js
 import React from 'react';
 
-const ServiceCard = ({ title, description }) => {
-  return (
-    <div className="card h-100 shadow-sm mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{description}</p>
-      </div>
-    </div>
-  );
-};
+
+function ServiceCard({ title, brief, onClick, isSelected }) {
+    return (
+        <div 
+            className={`service-card ${isSelected ? 'selected' : ''}`} 
+            onClick={onClick}
+        >
+            <h2>{title}</h2>
+            <p>{brief}</p>
+        </div>
+    );
+}
 
 export default ServiceCard;

@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
@@ -8,7 +9,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 function App() {
-    // App.js
     const [theme, setTheme] = useState(() => {
         const initialTheme = 
           typeof window !== "undefined" && window.matchMedia &&
@@ -17,19 +17,32 @@ function App() {
             : 'light';
         console.log("Initial theme based on system preference:", initialTheme);
         return initialTheme;
-      });
-  
+    });
 
     useEffect(() => {
-        console.log("Applying theme:", theme); // Debugging log
+        console.log("Applying theme:", theme);
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme]);
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         const handleChange = () => setTheme(mediaQuery.matches ? 'dark' : 'light');
-        mediaQuery.addEventListener('change', handleChange);
-        return () => mediaQuery.removeEventListener('change', handleChange);
+
+        // Check if the modern `addEventListener` method is available and use it; otherwise, fallback to `addListener`.
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleChange);
+        } else if (mediaQuery.addListener) {
+            mediaQuery.addListener(handleChange);
+        }
+
+        // Cleanup event listener based on available API
+        return () => {
+            if (mediaQuery.removeEventListener) {
+                mediaQuery.removeEventListener('change', handleChange);
+            } else if (mediaQuery.removeListener) {
+                mediaQuery.removeListener(handleChange);
+            }
+        };
     }, []);
 
     return (
