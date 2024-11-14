@@ -3,11 +3,12 @@
 from flask import Flask, send_from_directory
 from flask_mail import Mail
 from .config import Config
+import os
 
 mail = Mail()  # Initialize mail here globally
 
 def create_app():
-    app = Flask(__name__, static_folder="../frontend/build", static_url_path="")
+    app = Flask(__name__, static_folder="build", static_url_path="")
     app.config.from_object(Config)
 
     # Initialize mail within the app context
