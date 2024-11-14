@@ -16,5 +16,5 @@ class Config:
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")  # Your email password
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")  # Default sender email
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your_secret_key')
-
+    CORS_HEADERS = 'Content-Type'
 

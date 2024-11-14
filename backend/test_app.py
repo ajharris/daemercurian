@@ -1,7 +1,20 @@
 import unittest
-from app import app
+from dotenv import load_dotenv
+from backend import create_app  # Correct import
 from unittest.mock import patch
-import time, os
+import time, os, sys
+
+# Load environment variables
+load_dotenv()
+
+print("PYTHONPATH:", os.getenv("PYTHONPATH"))
+print("System path:", sys.path)
+
+class TestEnvironmentVariables(unittest.TestCase):
+    def test_pythonpath_set(self):
+        pythonpath = os.getenv("PYTHONPATH")
+        self.assertIsNotNone(pythonpath, "PYTHONPATH is not set")
+
 
 class EnvTest(unittest.TestCase):
     def test_env_variables(self):
@@ -12,14 +25,14 @@ class EnvTest(unittest.TestCase):
 
 class FlaskTest(unittest.TestCase):
     def setUp(self):
-        self.app = app.test_client()
+        self.app = create_app().test_client()
         self.app.testing = True
 
-        # Mock `mail.send` for all tests except the one actual email send test
-        patcher = patch("app.mail.send")
+        # Mock `mail.send`
+        patcher = patch("backend.app.mail.send")
         self.mock_send = patcher.start()
         self.mock_send.return_value = True
-        self.addCleanup(patcher.stop)  # Ensures patch is stopped after each test
+        self.addCleanup(patcher.stop)
 
     def test_cors_headers(self):
         response = self.app.options('/send_email')
@@ -27,7 +40,6 @@ class FlaskTest(unittest.TestCase):
         self.assertIn('Access-Control-Allow-Origin', response.headers)
 
     def test_send_email_success(self):
-        # This test uses the mocked `mail.send`
         response = self.app.post('/send_email', json={
             "name": "Test User", "email": "testuser@example.com", "message": "Hello!"
         })
@@ -50,8 +62,42 @@ class FlaskTest(unittest.TestCase):
         self.assertLess(end - start, 5)  # response within 5 seconds
         self.assertEqual(response.status_code, 200)
 
+    def test_missing_name_field(self):
+        response = self.app.post('/send_email', json={
+            "email": "testuser@example.com", "message": "Hello!"
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Missing information", response.data)
+
+    def test_missing_email_field(self):
+        response = self.app.post('/send_email', json={
+            "name": "Test User", "message": "Hello!"
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Missing information", response.data)
+
+    def test_missing_message_field(self):
+        response = self.app.post('/send_email', json={
+            "name": "Test User", "email": "testuser@example.com"
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Missing information", response.data)
+    
+    def test_unusual_but_valid_email_format(self):
+        response = self.app.post('/send_email', json={
+            "name": "Edge Case User", "email": "user+test@example.co.uk", "message": "Hello!"
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Email sent successfully", response.data)
+    
+    def test_invalid_email_missing_at_symbol(self):
+        response = self.app.post('/send_email', json={
+            "name": "User", "email": "invalid-email.com", "message": "Hello!"
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Invalid email format", response.data)
+    
     def test_actual_email_send(self):
-        # Stop the patch temporarily for this test
         self.mock_send.stop()
         
         try:
@@ -61,7 +107,6 @@ class FlaskTest(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn(b"Email sent successfully", response.data)
         finally:
-            # Restart the mock for the remaining tests
             self.mock_send.start()
 
 if __name__ == "__main__":

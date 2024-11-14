@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify, make_response
 from flask_mail import Message
-from ..extensions import mail  # Import mail from extensions
+from ..extensions import mail
 import re
 
-# Initialize email_routes as a Blueprint
 email_routes = Blueprint('email_routes', __name__)
 
 def is_valid_email(email):
@@ -33,7 +32,7 @@ def send_email():
     try:
         msg = Message(
             subject=f"New Message from {name}",
-            recipients=['your-email@example.com'],
+            recipients=['recipient@example.com'],
             body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message_body}"
         )
         mail.send(msg)

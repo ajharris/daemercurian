@@ -1,7 +1,7 @@
 from flask import Flask
 from .config import Config
-from .extensions import mail
-from .routes import email_routes  # Import your blueprints here
+from .extensions import mail, cors
+from .routes.email_routes import email_routes
 
 def create_app():
     app = Flask(__name__)
@@ -9,6 +9,7 @@ def create_app():
 
     # Initialize extensions
     mail.init_app(app)
+    cors.init_app(app)
 
     # Register blueprints
     app.register_blueprint(email_routes)
