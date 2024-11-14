@@ -1,24 +1,25 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Contact from './Contact';
 
-test('renders Contact form and handles input change', () => {
+test('renders Contact form and handles submission', async () => {
     render(<Contact />);
-    
-    // Simulate typing into the form fields
-    fireEvent.change(screen.getByLabelText(/Name/i), { target: { value: 'Test User' } });
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByLabelText(/Message/i), { target: { value: 'Hello!' } });
 
-    // Assert that the values are set correctly before submitting
-    expect(screen.getByLabelText(/Name/i).value).toBe('Test User');
-    expect(screen.getByLabelText(/Email/i).value).toBe('test@example.com');
-    expect(screen.getByLabelText(/Message/i).value).toBe('Hello!');
-    
-    // Submit the form
-    fireEvent.click(screen.getByText(/Send Message/i));
-    
-    // Assert that the form is cleared after submission
-    expect(screen.getByLabelText(/Name/i).value).toBe('');
-    expect(screen.getByLabelText(/Email/i).value).toBe('');
-    expect(screen.getByLabelText(/Message/i).value).toBe('');
+    // Type into the form fields
+    await userEvent.type(screen.getByPlaceholderText(/Your Name/i), 'Test User');
+    await userEvent.type(screen.getByPlaceholderText(/Your Email/i), 'test@example.com');
+    await userEvent.type(screen.getByPlaceholderText(/Your Message/i), 'Hello!');
+
+    // Check if the 'Your Name' field contains the expected value before submission
+    expect(screen.getByPlaceholderText(/Your Name/i).value).toBe('Test User');
+    expect(screen.getByPlaceholderText(/Your Email/i).value).toBe('test@example.com');
+    expect(screen.getByPlaceholderText(/Your Message/i).value).toBe('Hello!');
+
+    // Now click the submit button to trigger form clearing
+    await userEvent.click(screen.getByText(/Send Message/i));
+
+    // After submission, check if the fields are cleared
+    expect(screen.getByPlaceholderText(/Your Name/i).value).toBe('');
+    expect(screen.getByPlaceholderText(/Your Email/i).value).toBe('');
+    expect(screen.getByPlaceholderText(/Your Message/i).value).toBe('');
 });

@@ -4,9 +4,18 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg">
         <div className="container">
-          <Link className="navbar-brand" to="/">Daemercurian Consulting</Link>
+          <Link className="navbar-brand" to="/">
+            <img
+              src={`${process.env.PUBLIC_URL}/logo.png`}
+              alt="Daemercurian Logo"
+              width="40" // Adjust the width as needed
+              height="40"
+              className="d-inline-block align-top me-2"
+            />
+            Daemercurian Consulting
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
