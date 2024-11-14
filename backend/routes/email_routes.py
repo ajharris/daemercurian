@@ -1,13 +1,16 @@
 from flask import Blueprint, request, jsonify, make_response
 from flask_mail import Message
-from .. import mail  # Import the initialized mail object
-from ..utils.validators import is_valid_email
+from ..extensions import mail  # Import mail from extensions
+import re
 
-email_routes = Blueprint('email', __name__)
+email_routes = Blueprint('email_routes', __name__)
+
+def is_valid_email(email):
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(email_regex, email) is not None
 
 @email_routes.route('/send_email', methods=['OPTIONS', 'POST'])
 def send_email():
-    # Handle preflight OPTIONS request for CORS
     if request.method == 'OPTIONS':
         response = make_response()
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -15,7 +18,6 @@ def send_email():
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
         return response, 200
 
-    # POST request handling for email functionality
     data = request.get_json()
     name = data.get('name')
     email = data.get('email')
@@ -30,7 +32,7 @@ def send_email():
     try:
         msg = Message(
             subject=f"New Message from {name}",
-            recipients=[request.app.config['MAIL_USERNAME']],
+            recipients=['your-email@example.com'],
             body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message_body}"
         )
         mail.send(msg)
